@@ -38,12 +38,13 @@ long‑distance transport
 zero emissions
 no fuel dependency
 minimal maintenance
-It uses oscillating wave energy to generate continuous forward thrust, enabling sustainable maritime logistics in low‑infrastructure regions.
+It uses oscillating wave energy to generate continuous forward thrust, enabling sustainable maritime Logistics.
 Full technical documentation (open source):
 https://zenodo.org/records/17552757
 Open‑Source Mission
 All S.K.O.O.G. systems are released under CC‑BY 4.0 and published with DOI for permanent global access. The goal is to provide scalable, infrastructure‑independent solutions for water, survival protein, environment, and transport — freely available to all.
-More information:
+
+Official website:
 https://www.skoogmarine.com
 Innovating for a hunger‑free and thirst‑free world.
 Water from air. Ocean as food. Proactive plastic management.
