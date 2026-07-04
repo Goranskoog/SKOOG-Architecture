@@ -13,6 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Unzip project
+        run: |
+          unzip -o "QuakeRescue LifeLink AutomaticPulse.zip" -d project
+          cp -r project/* ./
+          rm -rf project
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
