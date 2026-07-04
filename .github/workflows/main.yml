@@ -2,9 +2,7 @@ name: Build QuakeRescue APK
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [main, master]
   workflow_dispatch:
 
 jobs:
@@ -15,55 +13,47 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Show repository contents
+      - name: Extract project
         run: |
-          echo "Repository root:"
-          pwd
-          ls -la
+          unzip -o "QuakeRescue LifeLink AutomaticPulse.zip" -d .
+          chmod +x gradlew
 
-      - name: Extract project ZIP
+      - name: Verify project
         run: |
-          unzip -o "QuakeRescue LifeLink AutomaticPulse.zip" -d extracted
-
-      - name: Show extracted files
-        run: |
-          echo "Extracted structure:"
-          find extracted
-
-      - name: Locate Android project
-        run: |
-          PROJECT_DIR=$(find extracted -name settings.gradle.kts | head -n 1 | xargs dirname)
-
-          echo "PROJECT_DIR=$PROJECT_DIR"
-
-          cp -r "$PROJECT_DIR"/* .
-
           echo "Current directory:"
           pwd
           ls -la
-
-      - name: Verify Gradle files
-        run: |
-          test -f gradlew
           test -f settings.gradle.kts
           test -f build.gradle.kts
-          ls -la
+          test -f gradlew
+          test -d app
+          test -d wear
 
-      - name: Set up Java 17
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
           cache: gradle
 
-      - name: Make Gradle executable
-        run: chmod +x gradlew
+      - name: Install Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Display Gradle version
+      - name: Accept SDK licenses
+        run: yes | sdkmanager --licenses
+
+      - name: Install required SDK packages
+        run: |
+          sdkmanager \
+            "platform-tools" \
+            "platforms;android-34" \
+            "build-tools;34.0.0"
+
+      - name: Show Gradle version
         run: ./gradlew --version
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace --info --no-daemon
+        run: ./gradlew clean assembleDebug --stacktrace --info --no-daemon
 
       - name: Upload APK
         if: success()
